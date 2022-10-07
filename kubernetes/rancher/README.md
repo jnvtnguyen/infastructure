@@ -35,9 +35,9 @@ kubectl --namespace cattle-system rollout status deploy/rancher
 
 ## Uninstalling Rancher
 ```
-helm uninstall cert-manager jetstack/cert-manager --namespace cert-manager
-helm uninstall traefik traefik/traefik --namespace traefik
-helm uninstall rancher rancher-stable/rancher --namespace cattle-system
+helm uninstall cert-manager --namespace cert-manager
+helm uninstall traefik --namespace traefik
+helm uninstall rancher --namespace cattle-system
 
 kubectl delete namespace cert-manager rancher traefik
 ```
