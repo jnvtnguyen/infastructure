@@ -1,8 +1,8 @@
 locals {
   # Flatten all Kubernetes Clusters Worker Node Definition in Order to get a Single Machine Array
   kubernetes_worker_machines = flatten([
-    for index, cluster in var.kubernetes_clusters: [
-      for worker_node in var.kubernetes_clusters[index].worker_nodes_definition: {
+    for cindex, cluster in var.kubernetes_clusters: [
+      for worker_node in var.kubernetes_clusters[cindex].worker_nodes_definition: {
         name = worker_node.name
         ip_address = worker_node.ip_address
         target_node = worker_node.target_node
@@ -13,6 +13,7 @@ locals {
         onboot = worker_node.onboot
         description = "${cluster.name} Worker Kubernetes Node"
         api_server_ip_address = cluster.api_server_ip_address
+        cluster_index = cindex
       }
     ]
   ])
@@ -77,7 +78,7 @@ resource "null_resource" "kubernetes_worker_machines_k3s_install" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo curl -sfL https://get.k3s.io | K3S_URL=https://${each.value.api_server_ip_address}:6443 K3S_TOKEN=${random_password.k3s_cluster_secret.result} sh -",
+      "sudo curl -sfL https://get.k3s.io | K3S_URL=https://${each.value.api_server_ip_address}:6443 K3S_TOKEN=${random_password.k3s_cluster_secret[each.value.cluster_index].result} sh -",
       "sleep 1"
     ]
   }

@@ -1,8 +1,8 @@
 locals {
   # Flatten all Kubernetes Clusters Master Node Definition in Order to get a Single Machine Array
   kubernetes_master_machines = flatten([
-    for index, cluster in var.kubernetes_clusters: [ 
-      for mindex, master_node in var.kubernetes_clusters[index].master_nodes_definition: { 
+    for cindex, cluster in var.kubernetes_clusters: [ 
+      for mindex, master_node in var.kubernetes_clusters[cindex].master_nodes_definition: { 
         name = master_node.name
         ip_address = master_node.ip_address
         target_node = master_node.target_node
@@ -19,13 +19,16 @@ locals {
         metallb_speaker_version = cluster.metallb_speaker_version
         metallb_controller_version = cluster.metallb_controller_version
         metallb_ip_address_range = cluster.metallb_ip_address_range
+        cluster_index = cindex
       }
     ]
   ])
+  kubernetes_clusters_count = length(var.kubernetes_clusters)
 }
 
 # Used to Generate the Random k3s Cluster Secret
 resource "random_password" "k3s_cluster_secret" {
+  count = local.kubernetes_clusters_count
   length = 48
   special = false
 }
@@ -92,7 +95,7 @@ resource "null_resource" "kubernetes_first_master_machine_k3s_install" {
 
   provisioner "remote-exec" {
     inline = [
-      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret.result} sh -s - server --cluster-init --node-taint CriticalAddonsOnly=true:NoExecute --tls-san https://${each.value.api_server_ip_address} --disable servicelb --disable traefik",
+      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret[each.value.cluster_index].result} sh -s - server --cluster-init --node-taint CriticalAddonsOnly=true:NoExecute --tls-san https://${each.value.api_server_ip_address} --disable servicelb --disable traefik",
       "sleep 1"
     ]
   }
@@ -219,7 +222,7 @@ resource "null_resource" "kubernetes_other_master_machines_k3s_install" {
 
   provisioner "remote-exec" {
     inline = [
-      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret.result} sh -s - server --node-taint CriticalAddonsOnly=true:NoExecute --server https://${each.value.api_server_ip_address}:6443 --tls-san https://${each.value.api_server_ip_address} --disable servicelb --disable traefik",
+      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret[each.value.cluster_index].result} sh -s - server --node-taint CriticalAddonsOnly=true:NoExecute --server https://${each.value.api_server_ip_address}:6443 --tls-san https://${each.value.api_server_ip_address} --disable servicelb --disable traefik",
       "until sudo kubectl get node ${each.value.name}; do sleep 1; done"
     ]
   }
