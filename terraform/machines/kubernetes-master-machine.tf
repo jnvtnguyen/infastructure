@@ -19,6 +19,7 @@ locals {
         metallb_speaker_version = cluster.metallb_speaker_version
         metallb_controller_version = cluster.metallb_controller_version
         metallb_ip_address_range = cluster.metallb_ip_address_range
+        disable_traefik = cluster.disable_traefik
         cluster_index = cindex
       }
     ]
@@ -95,7 +96,7 @@ resource "null_resource" "kubernetes_first_master_machine_k3s_install" {
 
   provisioner "remote-exec" {
     inline = [
-      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret[each.value.cluster_index].result} sh -s - server --cluster-init --node-taint CriticalAddonsOnly=true:NoExecute --tls-san https://${each.value.api_server_ip_address} --disable servicelb --disable traefik",
+      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret[each.value.cluster_index].result} sh -s - server --cluster-init --node-taint CriticalAddonsOnly=true:NoExecute --tls-san https://${each.value.api_server_ip_address} --disable servicelb ${each.value.disable_traefik ? "--disable traefik" : ""}",
       "sleep 1"
     ]
   }
@@ -222,7 +223,7 @@ resource "null_resource" "kubernetes_other_master_machines_k3s_install" {
 
   provisioner "remote-exec" {
     inline = [
-      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret[each.value.cluster_index].result} sh -s - server --node-taint CriticalAddonsOnly=true:NoExecute --server https://${each.value.api_server_ip_address}:6443 --tls-san https://${each.value.api_server_ip_address} --disable servicelb --disable traefik",
+      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret[each.value.cluster_index].result} sh -s - server --node-taint CriticalAddonsOnly=true:NoExecute --server https://${each.value.api_server_ip_address}:6443 --tls-san https://${each.value.api_server_ip_address} --disable servicelb ${each.value.disable_traefik ? "--disable traefik" : ""}",
       "until sudo kubectl get node ${each.value.name}; do sleep 1; done"
     ]
   }

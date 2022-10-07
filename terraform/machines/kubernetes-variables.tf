@@ -8,6 +8,7 @@ variable "kubernetes_clusters" {
     metallb_speaker_version = optional(string, "v0.13.5")
     metallb_controller_version = optional(string, "v0.13.5")
     metallb_ip_address_range = string
+    disable_traefik = optional(bool, true)
     master_nodes_definition = list(object({
       name = string
       ip_address = string
