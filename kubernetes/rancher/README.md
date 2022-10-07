@@ -23,6 +23,8 @@ helm install cert-manager jetstack/cert-manager --set installCRDs=true --namespa
 
 #### Install Rancher
 ```
+helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
+helm repo update
 helm install rancher rancher-stable/rancher --namespace cattle-system --set hostname=rancher.local.syspawn.com
 ```
 
