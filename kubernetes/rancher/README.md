@@ -39,5 +39,5 @@ helm uninstall cert-manager --namespace cert-manager
 helm uninstall traefik --namespace traefik
 helm uninstall rancher --namespace cattle-system
 
-kubectl delete namespace cert-manager rancher traefik
+kubectl delete namespace cert-manager traefik cattle-system
 ```
