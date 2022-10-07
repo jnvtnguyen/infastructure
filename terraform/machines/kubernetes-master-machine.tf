@@ -11,7 +11,7 @@ locals {
         memory = master_node.memory
         balloon = master_node.balloon
         onboot = master_node.onboot
-        description = "${cluster.name} Worker Kubernetes Node"
+        description = "${cluster.name} Master Kubernetes Node"
         api_server_ip_address = cluster.api_server_ip_address
         network_interface = cluster.network_interface
         is_first_in_cluster = (mindex == 0)
@@ -194,7 +194,33 @@ resource "null_resource" "kubernetes_first_master_machine_install_metallb" {
   provisioner "remote-exec" {
     inline = [
       "sudo mv /tmp/k3s/metallb.yaml /var/lib/rancher/k3s/server/manifests/metallb.yaml",
-      "sleep 1"
+      "until sudo kubectl --namespace metallb-system wait --for condition=established --timeout=60s crd/l2advertisements.metallb.io crd/ipaddresspools.metallb.io; do sleep 1; done",
+    ]
+  }
+}
+
+# Resource to Install k3s on Other Master Machines
+resource "null_resource" "kubernetes_other_master_machines_k3s_install" {
+  depends_on = [
+    null_resource.kubernetes_first_master_machine_install_kube_vip 
+  ]
+
+  for_each = {
+    for m in local.kubernetes_master_machines: m.name => m
+    if !m.is_first_in_cluster
+  }
+
+  connection {
+    type = "ssh"
+    host = each.value.ip_address
+    user = "administrator"
+    port = 22
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret.result} sh -s - server --node-taint CriticalAddonsOnly=true:NoExecute --server https://${each.value.api_server_ip_address}:6443 --tls-san https://${each.value.api_server_ip_address} --disable servicelb --disable traefik",
+      "until sudo kubectl get node ${each.value.name}; do sleep 1; done"
     ]
   }
 }
@@ -202,7 +228,7 @@ resource "null_resource" "kubernetes_first_master_machine_install_metallb" {
 # Resource to Configure Metallb IPAdressRange
 resource "null_resource" "kubernetes_first_master_machine_apply_metallb_ip_address_range" {
   depends_on = [
-    null_resource.kubernetes_first_master_machine_install_metallb
+    null_resource.kubernetes_worker_machines_k3s_install
   ]
 
   for_each = {
@@ -226,7 +252,7 @@ resource "null_resource" "kubernetes_first_master_machine_apply_metallb_ip_addre
 
   provisioner "remote-exec" {
     inline = [
-      "sudo kubectl apply -f /tmp/k3s/metallb-ip-address-range.yaml",
+      "sudo kubectl apply -f /tmp/k3s/metallb-ip-address-range.yaml --timeout=120s",
       "sleep 1"
     ]
   }
@@ -254,34 +280,8 @@ resource "null_resource" "kubernetes_first_master_machine_remove_k3s_temp_folder
 
   provisioner "remote-exec" {
     inline = [
-      "sudo rm /tmp/k3s",
+      "sudo rm -rf /tmp/k3s",
       "sleep 1"
-    ]
-  }
-}
-
-# Resource to Install k3s on Other Master Machines
-resource "null_resource" "kubernetes_other_master_machines_k3s_install" {
-  depends_on = [
-    null_resource.kubernetes_first_master_machine_install_kube_vip 
-  ]
-
-  for_each = {
-    for m in local.kubernetes_master_machines: m.name => m
-    if !m.is_first_in_cluster
-  }
-
-  connection {
-    type = "ssh"
-    host = each.value.ip_address
-    user = "administrator"
-    port = 22
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret.result} sh -s - server --node-taint CriticalAddonsOnly=true:NoExecute --server https://${each.value.api_server_ip_address}:6443 --tls-san https://${each.value.api_server_ip_address} --disable servicelb --disable traefik",
-      "until sudo kubectl get node ${each.value.name}; do sleep 1; done"
     ]
   }
 }
@@ -351,7 +351,8 @@ resource "null_resource" "kubernetes_master_machines_remove_manifests" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo rm -rf /var/lib/rancher/k3s/server/manifests/*"
+      "sudo rm -rf /var/lib/rancher/k3s/server/manifests/*",
+      "sleep 1"
     ]
   }
 }
