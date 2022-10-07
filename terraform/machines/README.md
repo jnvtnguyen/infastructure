@@ -1,4 +1,4 @@
-### Creation of Main Infastructure
+## Creation of Main Infastructure
 
 #### Terraform
 
