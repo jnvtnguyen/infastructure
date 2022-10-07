@@ -6,8 +6,6 @@ kubectl apply -f namespace.yaml
 ```
 
 #### Install Cert Manager
-
-Cert Manager
 ```
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
