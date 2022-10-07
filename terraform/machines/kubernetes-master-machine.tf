@@ -194,7 +194,7 @@ resource "null_resource" "kubernetes_first_master_machine_install_metallb" {
   provisioner "remote-exec" {
     inline = [
       "sudo mv /tmp/k3s/metallb.yaml /var/lib/rancher/k3s/server/manifests/metallb.yaml",
-      "until sudo kubectl --namespace metallb-system wait --for condition=established --timeout=60s crd/l2advertisements.metallb.io crd/ipaddresspools.metallb.io; do sleep 1; done",
+      "sleep 1"
     ]
   }
 }
@@ -252,6 +252,7 @@ resource "null_resource" "kubernetes_first_master_machine_apply_metallb_ip_addre
 
   provisioner "remote-exec" {
     inline = [
+      "until sudo kubectl wait deployment controller --for condition=Available=True --namespace metallb-system --timeout 120s; do sleep 1; done",
       "sudo kubectl apply -f /tmp/k3s/metallb-ip-address-range.yaml --timeout=120s",
       "sleep 1"
     ]
