@@ -21,11 +21,6 @@ helm repo update
 helm install cert-manager jetstack/cert-manager --set installCRDs=true --namespace cert-manager 
 ```
 
-#### Wait for Creation of Cert Manager to Finish
-```
-kubectl get pods --namespace cattle-system
-```
-
 #### Install Rancher
 ```
 helm install rancher rancher-stable/rancher --namespace cattle-system --set hostname=rancher.local.syspawn.com
