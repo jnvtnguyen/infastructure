@@ -226,7 +226,7 @@ resource "null_resource" "kubernetes_first_master_machine_apply_metallb_ip_addre
 
   provisioner "remote-exec" {
     inline = [
-      "k3s kubectl apply -f /tmp/k3s/metallb-ip-address-range.yaml",
+      "sudo kubectl apply -f /tmp/k3s/metallb-ip-address-range.yaml",
       "sleep 1"
     ]
   }

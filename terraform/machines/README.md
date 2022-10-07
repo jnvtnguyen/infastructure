@@ -8,3 +8,8 @@ Initialize and Create Kubernetes Clusters/Machines Variables
 terraform init
 terraform apply
 ```
+
+Destroy
+```
+terraform destroy
+```
