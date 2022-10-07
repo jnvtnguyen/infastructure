@@ -1,11 +1,11 @@
-## Creating Rancher Installation on Rancher Cluster
+### Creating Rancher Installation on Rancher Cluster
 
-Create the Kubernetes Namespace for Rancher, Traefik & Cert Manager
+#### Create the Kubernetes Namespace for Rancher, Traefik & Cert Manager
 ```
 kubectl apply -f namespace.yaml
 ```
 
-Install Traefik & Cert Manager
+#### Install Traefik & Cert Manager
 
 Traefik
 ```
@@ -21,17 +21,17 @@ helm repo update
 helm install cert-manager jetstack/cert-manager --set installCRDs=true --namespace cert-manager 
 ```
 
-Wait for Creation of Cert Manager to Finish
+#### Wait for Creation of Cert Manager to Finish
 ```
 kubectl get pods --namespace cattle-system
 ```
 
-Rancher
+#### Install Rancher
 ```
 helm install rancher rancher-stable/rancher --namespace cattle-system --set hostname=rancher.local.syspawn.com
 ```
 
-Wait for Roll Out of Rancher
+#### Wait for Roll Out of Rancher
 ```
 kubectl --namespace cattle-system rollout status deploy/rancher
 ```
