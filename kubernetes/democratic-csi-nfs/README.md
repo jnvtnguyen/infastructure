@@ -20,7 +20,7 @@ httpConnection:
   host: 10.0.0.8
   port: 80
   username: root
-  apiKey: 1-uLf8uCjZXCEWQ5WPWAbwE3BgpsgKOb3pXEH23tgVRsy29qwitCW4R5fLTBaVi23J
+  apiKey: <api-key>
   allowInsecure: true
 zfs:
   datasetParentName: tank/kubernetes/...
