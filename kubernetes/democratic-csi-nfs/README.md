@@ -9,9 +9,9 @@ kubectl apply -f namespace.yaml
 
 You must have nfs-common installed on all nodes and is automated in the terraform folder
 
-#### Installing Democratic CSI NFS Provisioner on Helm
+#### Installing Democratic CSI on Helm
 
-Before installing Democratic CSI NFS Provisioner on Helm, you must create your own values.yaml file from the provided values.template.yaml or the code below
+Before installing Democratic CSI on Helm, you must create your own values.yaml file from the provided values.template.yaml or the code below
 ```
 driver: freenas-api-nfs
 instance_id:
@@ -41,7 +41,7 @@ nfs:
   shareMapallGroup: ""
 ```
 
-Installing Democratic CSI NFS Provisioner on Helm
+Installing Democratic CSI on Helm
 ```
 helm repo add democratic-csi https://democratic-csi.github.io/charts/
 helm repo update
@@ -54,7 +54,7 @@ zfs-nfs democratic-csi/democratic-csi
 
 ## Uninstalling Democratic CSI NFS Provisioner
 
-#### Uninstall Democratic CSI NFS Provisioner on Helm
+#### Uninstall Democratic CSI on Helm
 ```
 helm uninstall nfs-subdir-external-provisioner
 ```
