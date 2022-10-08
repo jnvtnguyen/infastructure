@@ -31,8 +31,21 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --value
 ```
 
 #### Create Cloudflare Token Secret
+
+Make sure to create a cloud flare token secret yaml
 ```
-kubectl apply -f cert-manager/cloudflare-token-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-token-secret
+  namespace: cert-manager
+type: Opaque
+stringData:
+  cloudflare-token: <cloudflare-token>
+```
+
+```
+kubectl apply -f cert-manager/cloudflare-token-secret.secret.yaml
 ```
 
 #### Create LetsEncrypt Staging Issuer
