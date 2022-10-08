@@ -1,7 +1,8 @@
 ## Installing Democratic CSI NFS Provisioner for NFS Storage on Kubernetes Clusters
 
 #### Creating Democratic CSI Namespace
-``` kubectl apply -f namespace.yaml
+```
+kubectl apply -f namespace.yaml
 ```
 
 #### Server/Node Prerequisites
