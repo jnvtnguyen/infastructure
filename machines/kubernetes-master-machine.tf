@@ -69,7 +69,6 @@ resource "proxmox_vm_qemu" "kubernetes_master_machines" {
   searchdomain = "local.syspawn.com"
   nameserver = "10.0.0.12"
   ciuser = "administrator"
-  cipassword = "F1$h3443"
   sshkeys = <<EOF
   ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCXREtrQCkD8QM1UE6H/ClAF+bb5aMqzPz49V9fzJDGCHcaPuBmNpzQOSqVvg1fwflSLbKiESBhVI+uD2g3mgWClUl5rTJH0qHQ5Tsg+bqd83fbtYRYoGeAmTX6/3i1jVA0KH3tN0tLNb+mR8fQPltFTIFdZHsfmrQZICZyzt8L+sb9PDsa/6KjpoxTqSZPXmHGJz7iKS2PkTUbX29v4beyfdXapxiHNn4F391MXrokYq0JmYEV7Mr6RLwEGsf5y0q6tyfM7JF6tAvnBl2cf8DFGbgzfhdh9Ek6iCeJCX9zbvH152+LadpfR/A/Hvc10p9zRNHljxYyzD0VqnKQ3lViK+aRQqngHIHvPFspXgcLvyndW6xaMBNLuXvWxX/ojCbOISKW02KNuVVDmwOX1sjQA6JQ2Y/llumoaEvJv13pSMBojocw4lf6gSqHFjQacCe/p/4m4l0YgKOFciCV7K5q/1mRkJB+4parocjyvC+tUB5411X+yV0Y4Y8UDrZ6qNM= jnguyen@lxmint
   EOF

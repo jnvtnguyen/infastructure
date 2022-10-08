@@ -12,7 +12,7 @@ spec:
     - match: Host(`heimdall.local.syspawn.com`)
       kind: Rule
       services:
-        - name: nginx
+        - name: heimdall
           port: 443
   tls:
     secretName: local-syspawn-com-tls
