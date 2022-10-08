@@ -5,7 +5,6 @@ metadata:
   namespace: heimdall     
 spec:
   storageClassName: "truenas-nfs-csi" 
-  volumeName: heimdall
   accessModes:
     - ReadWriteMany         
   volumeMode: Filesystem

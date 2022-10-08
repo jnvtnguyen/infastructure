@@ -1,0 +1,24 @@
+## Installing Traefik on a Kubernetes Cluster
+
+#### Creating Namespace Resources for Traefik & Cert Manager
+```
+kubectl apply -f namespace.yaml
+```
+
+#### Installing Traefik on Helm
+```
+helm repo add traefik https://helm.traefik.io/traefik
+helm repo update
+helm install --namespace=traefik traefik traefik/traefik --values=values.yaml
+```
+
+#### Creating Dashboard Authentication
+```
+sudo apt-get update
+sudo apt-get intall apache2-utils
+htpassword -nb admin <password> | openssl base64
+
+kubectl apply -f dashboard-secret.yaml
+kubectl apply -f dashboard-middleware.yaml
+kubectl apply -f dashboard-ingress.yaml
+```
