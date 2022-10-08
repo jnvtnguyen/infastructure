@@ -11,34 +11,57 @@ You must have nfs-common installed on all nodes and is automated in the terrafor
 
 #### Installing Democratic CSI on Helm
 
-Before installing Democratic CSI on Helm, you must create your own values.yaml file from the provided values.template.yaml or the code below
+Before installing Democratic CSI on Helm, you must create your own values.yaml file from the provided code below
 ```
-driver: freenas-api-nfs
-instance_id:
-httpConnection:
-  protocol: http
-  host: 10.0.0.8
-  port: 80
-  username: root
-  apiKey: <api-key>
-  allowInsecure: true
-zfs:
-  datasetParentName: tank/kubernetes/...
-  detachedSnapshotsDatasetParentName: tank/kubernetes/...
-  datasetEnableQuotas: true
-  datasetEnableReservation: false
-  datasetPermissionsMode: "0777"
-  datasetPermissionsUser: 0
-  datasetPermissionsGroup: 0
-nfs:
-  shareHost: 10.0.0.8
-  shareAlldirs: false
-  shareAllowedHosts: []
-  shareAllowedNetworks: []
-  shareMaprootUser: root
-  shareMaprootGroup: root
-  shareMapallUser: ""
-  shareMapallGroup: ""
+csiDriver:
+  name: "org.democratic-csi.nfs"
+
+storageClasses:
+- name: truenas-nfs-csi 
+  defaultClass: false
+  reclaimPolicy: Retain
+  volumeBindingMode: Immediate
+  allowVolumeExpansion: true
+  parameters:
+    fsType: nfs
+  mountOptions:
+  - noatime
+  - nfsvers=4
+  secrets:
+    provisioner-secret:
+    controller-publish-secret:
+    node-stage-secret:
+    node-publish-secret:
+    controller-expand-secret:
+
+driver:
+  config:
+    driver: freenas-api-nfs
+    instance_id: 
+    httpConnection:
+      protocol: http
+      host: 10.0.0.8
+      port: 80
+      username: root
+      apiKey: <api-key>
+      allowInsecure: true
+    zfs:
+      datasetParentName: tank/kubernetes/...
+      detachedSnapshotsDatasetParentName: tank/kubernetes/...
+      datasetEnableQuotas: true
+      datasetEnableReservation: false
+      datasetPermissionsUser: 0
+      datasetPermissionsMode: "0777"
+      datasetPermissionsGroup: 0
+    nfs:
+      shareHost: 10.0.0.8
+      shareAlldirs: false
+      shareAllowedHosts: []
+      shareAllowedNetworks: []
+      shareMaprootGroup: root
+      shareMaprootUser: root
+      shareMapallUser: ""
+      shareMapallGroup: ""  
 ```
 
 Installing Democratic CSI on Helm
