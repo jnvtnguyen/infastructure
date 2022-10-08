@@ -14,7 +14,7 @@ You must have nfs-common installed on all nodes and is automated in the terrafor
 Before installing Democratic CSI on Helm, you must create your own values.yaml file from the provided code below
 ```
 csiDriver:
-  name: "org.democratic-csi.nfs"
+  name: "org.democratic-csi.truenas-nfs"
 
 storageClasses:
 - name: truenas-nfs-csi 

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: heimdall
+  namespace: heimdall     
+spec:
+  storageClassName: "truenas-nfs-csi" 
+  volumeName: heimdall
+  accessModes:
+    - ReadWriteMany         
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi          

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heimdall        
+  namespace: heimdall 
+  labels:
+    app: heimdall       
+spec:
+  replicas: 1         
+  selector:
+    matchLabels:
+      app: heimdall
+  strategy:
+    rollingUpdate:
+      maxSurge: 0     
+      maxUnavailable: 1 
+    type: RollingUpdate 
+  template:
+    metadata:
+      labels:
+        app: heimdall
+    spec:
+      volumes:
+      - name: heimdall  
+        persistentVolumeClaim:
+          claimName: heimdall
+      - name: heimdall-ssl
+      containers:
+      - image: ghcr.io/linuxserver/heimdall 
+        name: heimdall                      
+        imagePullPolicy: Always           
+        env:                            
+        - name: PGID
+          value: "1000"
+        - name: PUID
+          value: "1000"
+        - name: TZ
+          value: America/Los_Angeles
+        ports:                              
+         - containerPort: 443
+           name: https
+           protocol: TCP
+        volumeMounts:             
+         - mountPath: /config               
+           name: heimdall
+           subPath: config                
