@@ -9,5 +9,6 @@ kubectl apply -f service.yaml
 ```
 or
 ```
+kubectl apply -f namespace.yaml
 kubectl apply -f .
 ```
