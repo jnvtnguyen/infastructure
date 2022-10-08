@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: staging-syspawn-com
+  namespace: cert-manager
+spec:
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "traefik"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "traefik"
+  secretName: staging-syspawn-com-staging-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: "*.staging.syspawn.com"
+  dnsNames:
+  - "staging.syspawn.com"
+  - "*.staging.syspawn.com"

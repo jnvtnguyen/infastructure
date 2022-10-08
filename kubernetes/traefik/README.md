@@ -18,9 +18,21 @@ sudo apt-get update
 sudo apt-get intall apache2-utils
 htpasswd -nb admin <password> | openssl base64
 
-kubectl apply -f dashboard-authentication-secret.yaml
+kubectl apply -f dashboard-authentication-secret.secret.yaml
 kubectl apply -f dashboard-authentication-middleware.yaml
 kubectl apply -f dashboard-ingress.yaml
+```
+
+Template for Dashboard Authentication Secret:
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: traefik-dashboard-authentication
+  namespace: traefik
+type: Opaque
+data:
+  users: <user generated from htpasswd>
 ```
 
 #### Installing Cert Manager on Helm
@@ -31,8 +43,11 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --value
 ```
 
 #### Create Cloudflare Token Secret
+```
+kubectl apply -f cert-manager/cloudflare-token-secret.secret.yaml
+```
 
-Make sure to create a cloud flare token secret yaml
+Template for Cloudflare Token Secret:
 ```
 apiVersion: v1
 kind: Secret
@@ -44,10 +59,6 @@ stringData:
   cloudflare-token: <cloudflare-token>
 ```
 
-```
-kubectl apply -f cert-manager/cloudflare-token-secret.secret.yaml
-```
-
 #### Create LetsEncrypt Staging Issuer
 ```
 kubectl apply -f cert-manager/letsencrypt-staging.yaml
@@ -55,7 +66,7 @@ kubectl apply -f cert-manager/letsencrypt-staging.yaml
 
 #### Create LetsEncrypt Staging Certificate
 ```
-kubectl apply -f cert-manager/certificates/staging-local-syspawn-com.yaml
+kubectl apply -f cert-manager/certificates/staging/local-syspawn-com.yaml
 ```
 
 #### Test LetsEncrypt Staging Certificate
@@ -69,5 +80,5 @@ Make sure that Staging Certificate is Working Before Moving on
 #### Create LetsEncrypt Production Certificate
 ```
 kubectl apply -f cert-manager/letsencrypt-production.yaml
-kubectl apply -f cert-manager/certificates/local-syspawn-com.yaml
+kubectl apply -f cert-manager/certificates/production/local-syspawn-com.yaml
 ```
