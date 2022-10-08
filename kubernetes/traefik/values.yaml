@@ -5,6 +5,10 @@ globalArguments:
 additionalArguments:
   - "--serversTransport.insecureSkipVerify=true"
   - "--log.level=INFO"
+  - "--providers.kubernetesingress.allowemptyservices=true"
+  - "--providers.kubernetesingress.allowexternalnameservices=true"
+  - "--providers.kubernetescrd.allowemptyservices=true"
+  - "--providers.kubernetescrd.allowexternalnameservices=true"
 
 deployment:
   enabled: true
