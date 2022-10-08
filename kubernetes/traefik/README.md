@@ -22,3 +22,10 @@ kubectl apply -f dashboard-authentication-secret.yaml
 kubectl apply -f dashboard-authentication-middleware.yaml
 kubectl apply -f dashboard-ingress.yaml
 ```
+
+#### Installing Cert Manager on Helm
+```
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+helm install cert-manager jetstack/cert-manager --namespace cert-manager --values cert-manager/values.yaml
+```
