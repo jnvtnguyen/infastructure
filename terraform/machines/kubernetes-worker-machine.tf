@@ -78,7 +78,7 @@ resource "null_resource" "kubernetes_worker_machines_k3s_install" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo curl -sfL https://get.k3s.io | K3S_URL=https://${each.value.api_server_ip_address}:6443 K3S_TOKEN=${random_password.k3s_cluster_secret[each.value.cluster_index].result} sh -",
+      "sudo curl -sfL https://get.k3s.io | K3S_URL=https://${each.value.api_server_ip_address}:6443 K3S_TOKEN=${nonsensitive(random_password.k3s_cluster_secret[each.value.cluster_index].result)} sh -",
       "sleep 1"
     ]
   }

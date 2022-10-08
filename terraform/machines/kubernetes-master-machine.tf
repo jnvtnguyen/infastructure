@@ -96,7 +96,7 @@ resource "null_resource" "kubernetes_first_master_machine_k3s_install" {
 
   provisioner "remote-exec" {
     inline = [
-      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret[each.value.cluster_index].result} sh -s - server --cluster-init --node-taint CriticalAddonsOnly=true:NoExecute --tls-san https://${each.value.api_server_ip_address} --disable servicelb ${each.value.disable_traefik ? "--disable traefik" : ""}",
+      "curl -sfL https://get.k3s.io | K3S_TOKEN=${nonsensitive(random_password.k3s_cluster_secret[each.value.cluster_index].result)} sh -s - server --cluster-init --node-taint CriticalAddonsOnly=true:NoExecute --tls-san https://${each.value.api_server_ip_address} --disable servicelb ${each.value.disable_traefik ? "--disable traefik" : ""}",
       "sleep 1"
     ]
   }
@@ -223,7 +223,7 @@ resource "null_resource" "kubernetes_other_master_machines_k3s_install" {
 
   provisioner "remote-exec" {
     inline = [
-      "curl -sfL https://get.k3s.io | K3S_TOKEN=${random_password.k3s_cluster_secret[each.value.cluster_index].result} sh -s - server --node-taint CriticalAddonsOnly=true:NoExecute --server https://${each.value.api_server_ip_address}:6443 --tls-san https://${each.value.api_server_ip_address} --disable servicelb ${each.value.disable_traefik ? "--disable traefik" : ""}",
+      "curl -sfL https://get.k3s.io | K3S_TOKEN=${nonsensitive(random_password.k3s_cluster_secret[each.value.cluster_index].result)} sh -s - server --node-taint CriticalAddonsOnly=true:NoExecute --server https://${each.value.api_server_ip_address}:6443 --tls-san https://${each.value.api_server_ip_address} --disable servicelb ${each.value.disable_traefik ? "--disable traefik" : ""}",
       "until sudo kubectl get node ${each.value.name}; do sleep 1; done"
     ]
   }
@@ -257,8 +257,7 @@ resource "null_resource" "kubernetes_first_master_machine_apply_metallb_ip_addre
   provisioner "remote-exec" {
     inline = [
       "until sudo kubectl wait deployment controller --for condition=Available=True --namespace metallb-system --timeout 120s; do sleep 1; done",
-      "sudo kubectl apply -f /tmp/k3s/metallb-ip-address-range.yaml --timeout=120s",
-      "sleep 1"
+      "until sudo kubectl apply -f /tmp/k3s/metallb-ip-address-range.yaml --timeout=120s; do sleep 1; done",
     ]
   }
 }
