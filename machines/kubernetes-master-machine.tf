@@ -66,7 +66,6 @@ resource "proxmox_vm_qemu" "kubernetes_master_machines" {
 
   os_type = "cloud-init"
   ipconfig0 = "ip=${each.value.ip_address}/24,gw=10.0.0.1"
-  searchdomain = "local.syspawn.com"
   nameserver = "10.0.0.12"
   ciuser = "administrator"
   sshkeys = <<EOF

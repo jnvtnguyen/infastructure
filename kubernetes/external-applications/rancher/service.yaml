@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: rancher
+  namespace: external-applications
+spec:
+  type: ExternalName
+  ports:
+  - name: https
+    port: 443
+  externalName: 10.0.0.51
