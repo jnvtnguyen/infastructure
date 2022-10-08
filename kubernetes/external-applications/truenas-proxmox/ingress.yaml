@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: truenas-proxmox
+  namespace: external-applications
+  annotations: 
+    kubernetes.io/ingress.class: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`truenas-proxmox.local.syspawn.com`)
+      kind: Rule
+      services:
+        - name: truenas-proxmox
+          port: 443
+  tls:
+    secretName: local-syspawn-com-tls
