@@ -9,3 +9,8 @@ kubectl apply -f namespace.yaml
 ```
 kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/ha/install.yaml --namespace argocd
 ```
+
+#### Creating ArgoCD Ingress
+```
+kubectl apply -f ingress.yaml
+```

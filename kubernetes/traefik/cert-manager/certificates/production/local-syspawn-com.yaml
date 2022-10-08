@@ -8,8 +8,8 @@ spec:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
-      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "traefik, heimdall, external-applications"
-      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "traefik, heimdall, external-applications"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "traefik, heimdall, external-applications, argocd"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "traefik, heimdall, external-applications, argocd"
   secretName: local-syspawn-com-tls
   issuerRef:
     name: letsencrypt-production
