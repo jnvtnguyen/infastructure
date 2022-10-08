@@ -60,7 +60,7 @@ kubectl apply -f cert-manager/certificates/staging-local-syspawn-com.yaml
 
 #### Test LetsEncrypt Staging Certificate
 ```
-kubectl get challenges
+kubectl get challenges --namespace cert-manager
 kubectl get certificates --namespace cert-manager
 ```
 
