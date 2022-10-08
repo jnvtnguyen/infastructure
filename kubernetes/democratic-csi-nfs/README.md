@@ -1,8 +1,7 @@
 ## Installing Democratic CSI NFS Provisioner for NFS Storage on Kubernetes Clusters
 
 #### Creating Democratic CSI Namespace
-```
-kubectl apply -f namespace.yaml
+``` kubectl apply -f namespace.yaml
 ```
 
 #### Server/Node Prerequisites
@@ -68,7 +67,7 @@ Installing Democratic CSI on Helm
 ```
 helm repo add democratic-csi https://democratic-csi.github.io/charts/
 helm repo update
-helm install zfs-nfs democratic-csi/democratic-csi --values <values.template.yaml> --namespace democratic-csi
+helm install truenas-nfs democratic-csi/democratic-csi --values <values.template.yaml> --namespace democratic-csi
 ```
 
 ## Uninstalling Democratic CSI NFS Provisioner
