@@ -16,9 +16,9 @@ helm install --namespace=traefik traefik traefik/traefik --values=values.yaml
 ```
 sudo apt-get update
 sudo apt-get intall apache2-utils
-htpassword -nb admin <password> | openssl base64
+htpasswd -nb admin <password> | openssl base64
 
-kubectl apply -f dashboard-secret.yaml
-kubectl apply -f dashboard-middleware.yaml
+kubectl apply -f dashboard-authentication-secret.yaml
+kubectl apply -f dashboard-authentication-middleware.yaml
 kubectl apply -f dashboard-ingress.yaml
 ```
