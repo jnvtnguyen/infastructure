@@ -1,6 +1,6 @@
 ## Installing NFS Common on Kubernetes Nodes
 
-In order to use NFS Subdir External Provisioner, we must install a nfs-common package on all the nodes.
+In order to use Democratic CSI NFS Provisioner, we must install a nfs-common package on all the nodes.
 
 #### Terraform
 
