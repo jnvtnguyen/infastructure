@@ -4,6 +4,12 @@ metadata:
   name: local-syspawn-com
   namespace: cert-manager
 spec:
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "traefik, heimdall"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "traefik, heimdall"
   secretName: local-syspawn-com-staging-tls
   issuerRef:
     name: letsencrypt-staging
