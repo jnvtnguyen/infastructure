@@ -66,7 +66,7 @@ kubectl apply -f cert-manager/letsencrypt-staging.yaml
 
 #### Create LetsEncrypt Staging Certificate
 ```
-kubectl apply -f cert-manager/certificates/staging/local-syspawn-com.yaml
+kubectl apply -f cert-manager/certificates/staging/<certificate>
 ```
 
 #### Test LetsEncrypt Staging Certificate
@@ -80,5 +80,5 @@ Make sure that Staging Certificate is Working Before Moving on
 #### Create LetsEncrypt Production Certificate
 ```
 kubectl apply -f cert-manager/letsencrypt-production.yaml
-kubectl apply -f cert-manager/certificates/production/local-syspawn-com.yaml
+kubectl apply -f cert-manager/certificates/production/<certificate>
 ```

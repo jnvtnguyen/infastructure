@@ -11,6 +11,8 @@ spec:
   routes:
     - match: Host(`rancher.local.syspawn.com`)
       kind: Rule
+      middlewares:
+        - name: rancher-headers
       services:
         - name: rancher
           port: 443

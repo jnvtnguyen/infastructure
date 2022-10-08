@@ -1,0 +1,9 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: rancher-headers
+  namespace: external-applications
+spec:
+  headers:
+    customRequestHeaders:
+      X-Forwarded-Proto: "https"
