@@ -9,7 +9,11 @@ kubectl apply -f namespace.yaml
 ```
 helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
 helm repo update
-helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace nfs-subdir-external-provisioner --nfs.mountOptions 'nfsvers=4' --set nfs.server=10.0.0.8 --set nfs.path=/tank/kubernetes/...
+helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+--namespace nfs-subdir-external-provisioner \
+--set nfs.mountOptions={nfsvers=4} \
+--set nfs.server=10.0.0.8 \
+--set nfs.path=/tank/kubernetes/...
 ```
 
 ## Uninstalling NFS Subdir External Provisioner
