@@ -187,7 +187,7 @@ kubernetes_clusters = [
         name = "pwkb6",
         ip_address = "10.0.0.49",
         target_node = "pve1"
-      }
+      },
     ] 
   }
 ]
