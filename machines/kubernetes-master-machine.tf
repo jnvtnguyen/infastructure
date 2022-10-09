@@ -85,6 +85,10 @@ resource "null_resource" "kubernetes_first_master_machine_k3s_install" {
     if m.is_first_in_cluster
   }
 
+  triggers = {
+    machines = join(",", flatten([for m in local.kubernetes_master_machines: [for pm in proxmox_vm_qemu.kubernetes_master_machines: pm.name if m.name == pm.name && m.is_first_in_cluster]]))
+  }
+
   connection {
     type = "ssh"
     host = each.value.ip_address
@@ -111,6 +115,10 @@ resource "null_resource" "kubernetes_first_master_machine_create_k3s_temp_folder
     if m.is_first_in_cluster
   }
 
+  triggers = {
+    machines = join(",", flatten([for m in local.kubernetes_master_machines: [for pm in proxmox_vm_qemu.kubernetes_master_machines: pm.name if m.name == pm.name && m.is_first_in_cluster]]))
+  }
+
   connection {
     type = "ssh"
     host = each.value.ip_address
@@ -135,6 +143,10 @@ resource "null_resource" "kubernetes_first_master_machine_install_kube_vip" {
   for_each = {
     for m in local.kubernetes_master_machines: m.name => m
     if m.is_first_in_cluster
+  }
+
+  triggers = {
+    machines = join(",", flatten([for m in local.kubernetes_master_machines: [for pm in proxmox_vm_qemu.kubernetes_master_machines: pm.name if m.name == pm.name && m.is_first_in_cluster]]))
   }
 
   connection {
@@ -178,6 +190,10 @@ resource "null_resource" "kubernetes_first_master_machine_install_metallb" {
     if m.is_first_in_cluster
   }
 
+  triggers = {
+    machines = join(",", flatten([for m in local.kubernetes_master_machines: [for pm in proxmox_vm_qemu.kubernetes_master_machines: pm.name if m.name == pm.name && m.is_first_in_cluster]]))
+  }
+
   connection {
     type = "ssh"
     host = each.value.ip_address
@@ -212,6 +228,10 @@ resource "null_resource" "kubernetes_other_master_machines_k3s_install" {
     if !m.is_first_in_cluster
   }
 
+  triggers = {
+    machines = join(",", flatten([for m in local.kubernetes_master_machines: [for pm in proxmox_vm_qemu.kubernetes_master_machines: pm.name if m.name == pm.name && !m.is_first_in_cluster]]))
+  }
+
   connection {
     type = "ssh"
     host = each.value.ip_address
@@ -236,6 +256,10 @@ resource "null_resource" "kubernetes_first_master_machine_apply_metallb_ip_addre
   for_each = {
     for m in local.kubernetes_master_machines: m.name => m
     if m.is_first_in_cluster
+  }
+
+  triggers = {
+    machines = join(",", flatten([for m in local.kubernetes_master_machines: [for pm in proxmox_vm_qemu.kubernetes_master_machines: pm.name if m.name == pm.name && m.is_first_in_cluster]]))
   }
 
   connection {
@@ -273,6 +297,10 @@ resource "null_resource" "kubernetes_first_master_machine_remove_k3s_temp_folder
     if m.is_first_in_cluster
   }
 
+  triggers = {
+    machines = join(",", flatten([for m in local.kubernetes_master_machines: [for pm in proxmox_vm_qemu.kubernetes_master_machines: pm.name if m.name == pm.name && m.is_first_in_cluster]]))
+  }
+
   connection {
     type = "ssh"
     host = each.value.ip_address
@@ -295,6 +323,10 @@ resource "null_resource" "kubernetes_master_machines_copy_kube_config_to_home" {
   ]
 
   for_each = {for m in local.kubernetes_master_machines: m.name => m}
+
+  triggers = {
+    machines = join(",", flatten([for m in local.kubernetes_master_machines: [for pm in proxmox_vm_qemu.kubernetes_master_machines: pm.name if m.name == pm.name]]))
+  }
 
   connection {
     type = "ssh"
@@ -321,6 +353,10 @@ resource "null_resource" "kubernetes_master_machines_configure_api_server_ip_add
 
   for_each = {for m in local.kubernetes_master_machines: m.name => m}
 
+  triggers = {
+    machines = join(",", flatten([for m in local.kubernetes_master_machines: [for pm in proxmox_vm_qemu.kubernetes_master_machines: pm.name if m.name == pm.name]]))
+  }
+
   connection {
     type = "ssh"
     host = each.value.ip_address
@@ -343,6 +379,10 @@ resource "null_resource" "kubernetes_master_machines_remove_manifests" {
   ]
 
   for_each = {for m in local.kubernetes_master_machines: m.name => m}
+
+  triggers = {
+    machines = join(",", flatten([for m in local.kubernetes_master_machines: [for pm in proxmox_vm_qemu.kubernetes_master_machines: pm.name if m.name == pm.name]]))
+  }
 
   connection {
     type = "ssh"

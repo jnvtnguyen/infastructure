@@ -11,8 +11,16 @@ spec:
   routes:
     - match: Host(`argocd.local.syspawn.com`)
       kind: Rule
+      priority: 10
       services:
         - name: argocd-server
           port: 443
+    - match: Host(`argocd.local.syspawn.com`) && Headers(`Content-Type`, `application/grpc`)
+      kind: Rule
+      priority: 11
+      services:
+        - name: argocd-server
+          port: 443
+          scheme: h2c
   tls:
     secretName: local-syspawn-com-tls

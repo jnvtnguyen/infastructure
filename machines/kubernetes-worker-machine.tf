@@ -67,6 +67,10 @@ resource "null_resource" "kubernetes_worker_machines_k3s_install" {
 
   for_each = {for w in local.kubernetes_worker_machines: w.name => w}
 
+  triggers = {
+    machines = join(",", [for m in proxmox_vm_qemu.kubernetes_master_machines: m.name])
+  }
+
   connection {
     type = "ssh"
     host = each.value.ip_address

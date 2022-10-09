@@ -20,3 +20,4 @@ terraform.rc
 
 # Ignore Secret YAML Files
 *.secret.yaml
+*.secret.hcl
