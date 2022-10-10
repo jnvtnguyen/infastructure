@@ -12,7 +12,7 @@ spec:
     - match: Host(`portainer.local.syspawn.com`)
       kind: Rule
       services:
-        - name: pve1
+        - name: portainer
           port: 9443
           scheme: https
   tls:

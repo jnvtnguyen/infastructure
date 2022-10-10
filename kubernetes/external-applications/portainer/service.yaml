@@ -6,6 +6,6 @@ metadata:
 spec:
   type: ExternalName
   ports:
-  - name: proxmox
+  - name: portainer
     port: 9443
   externalName: 10.0.0.100
