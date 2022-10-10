@@ -5,6 +5,7 @@ variable "machines" {
     description = string
     ip_address = string
     target_node = optional(string, "pve1")
+    user = optional(string, "admin")
     sockets = optional(number, 1)
     cores = optional(number, 8)
     memory = optional(number, 8192)
