@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: nextcloud
+  namespace: nextcloud                
+spec: 
+  selector:
+    app: nextcloud                    
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443

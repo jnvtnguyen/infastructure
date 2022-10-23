@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud                 
+  namespace: nextcloud             
+  labels:                       
+    app: nextcloud                 
+spec:
+  replicas: 1                     
+  selector:
+    matchLabels:
+      app: nextcloud
+  strategy:
+    rollingUpdate:
+      maxSurge: 0               
+      maxUnavailable: 1            
+    type: RollingUpdate            
+  template:
+    metadata:
+      labels:
+        app: nextcloud
+    spec:
+      volumes:
+      - name: nextcloud
+        persistentVolumeClaim:
+          claimName: nextcloud
+      containers:
+      - image: linuxserver/nextcloud
+        name: nextcloud             
+        imagePullPolicy: Always            
+        env:                              
+        - name: PGID
+          value: "1000" 
+        - name: PUID
+          value: "1000"
+        - name: TZ
+          value: America/Los_Angeles
+        ports:
+         - containerPort: 443             
+           name: https
+           protocol: TCP
+        volumeMounts:                     
+         - mountPath: /config              
+           name: nextcloud
+           subPath: config
+         - mountPath: /data
+           name: nextcloud
+           subPath: data 

@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: nextcloud-database
+  namespace: nextcloud
+spec:
+  selector:
+    pod-label: nextcloud-database
+  ports:
+    - name: mysql
+      protocol: TCP
+      port: 3306

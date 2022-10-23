@@ -4,6 +4,7 @@
 ```
 kubectl apply -f namespace.yaml
 kubectl apply -f service-account.yaml
+kubectl apply -f ingress.yaml
 ```
 or
 ```
@@ -15,5 +16,5 @@ kubectl apply -f .
 ```
 helm repo add jenkinsci https://charts.jenkins.io
 helm repo update
-helm install jenkins jenkinsci/jenkins -n jenkins -f jenkins-values.yaml
+helm install jenkins jenkinsci/jenkins -n jenkins -f values.yaml
 ```

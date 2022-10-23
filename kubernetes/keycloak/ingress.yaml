@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: keycloak
+  namespace: keycloak
+  annotations: 
+    kubernetes.io/ingress.class: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`keycloak.local.syspawn.com`)
+      kind: Rule
+      services:
+        - name: keycloak
+          port: 8080
+  tls:
+    secretName: local-syspawn-com-tls

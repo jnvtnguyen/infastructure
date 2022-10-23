@@ -24,7 +24,6 @@ spec:
       - name: heimdall  
         persistentVolumeClaim:
           claimName: heimdall
-      - name: heimdall-ssl
       containers:
       - image: ghcr.io/linuxserver/heimdall 
         name: heimdall                      
