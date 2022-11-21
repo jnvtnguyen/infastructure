@@ -1,3 +1,4 @@
+```
 apiVersion: v1
 kind: Secret
 metadata:
@@ -7,3 +8,4 @@ data:
   user: <user>
   password: <password>
   root_password: <root_password>
+```
